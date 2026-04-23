@@ -26,3 +26,22 @@ predictions <- predict(model, newdata = b_df)
 
 future_data <- read.csv("Bridges and Future Dates.csv")
 futurePredictions <- predict(model, newdata = future_data)
+
+#Graphing Regression Lines
+pred_df <- b_df %>%
+  group_by(ID) %>%
+  do({
+    model <- lm(TotTraffic ~ Year, data = .)
+    newdata <- data.frame(Year = 2026:2030)
+    preds <- predict(model, newdata)
+    data.frame(ID = unique(.$ID), Year = newdata$Year, TotTraffic = preds)
+  })
+
+ggplot(pred_df, aes(x = Year, y = TotTraffic, color = ID)) +
+  geom_line() +
+  coord_cartesian(xlim = c(2026, 2030)) +
+  scale_y_continuous(labels = comma) +
+  labs(
+    y = "Traffic",
+    title = "Prediction of MTA Traffic until 2030"
+  )
