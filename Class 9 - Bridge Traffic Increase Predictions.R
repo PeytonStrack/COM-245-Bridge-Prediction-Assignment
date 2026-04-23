@@ -26,3 +26,10 @@ predictions <- predict(model, newdata = b_df)
 
 future_data <- read.csv("Bridges and Future Dates.csv")
 futurePredictions <- predict(model, newdata = future_data)
+
+future_data$PredTraf <- futurePredictions
+
+future_data %>%
+  group_by(ID) %>%
+  mutate(pct_increase = (PredTraf - lag(PredTraf)) / lag(PredTraf) * 100) %>%
+  print(n = 999)
