@@ -19,6 +19,10 @@ d_df %>%
 b_df %>%
   print(n = 999)
 
-model <- lm(TotTraffic ~ ., data = b_df)
+model <- lm(TotTraffic ~ Year + ID, data = b_df)
 
 predictions <- predict(model, newdata = b_df)
+
+
+future_data <- read.csv("Bridges and Future Dates.csv")
+futurePredictions <- predict(model, newdata = future_data)
