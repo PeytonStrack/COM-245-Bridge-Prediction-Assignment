@@ -44,7 +44,7 @@ pred_df <- b_df %>%
   })
 
 ggplot(pred_df, aes(x = Year, y = TotTraffic, color = ID)) +
-  geom_line() +
+  geom_line(linewidth = 1.2) +
   coord_cartesian(xlim = c(2026, 2030)) +
   scale_y_continuous(labels = comma) +
   labs(
