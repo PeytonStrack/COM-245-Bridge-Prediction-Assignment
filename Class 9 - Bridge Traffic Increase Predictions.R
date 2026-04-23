@@ -7,6 +7,8 @@ brdgs <- c(1, 21, 2, 22, 3, 23, 4, 24, 5, 25, 6, 26, 9, 29, 11, 30)
 
 d_df %>%
   filter(ID %in% brdgs) %>%
+  mutate(Weekday = wday(mdy(Date))) %>%
+  filter(Weekday %in% c(2:6)) %>%
   mutate(Year = year(mdy(Date))) %>%
   mutate(ID = setID4(ID)) %>%
   group_by(ID, Year) %>%
@@ -16,3 +18,7 @@ d_df %>%
 
 b_df %>%
   print(n = 999)
+
+model <- lm(TotTraffic ~ ., data = b_df)
+
+predictions <- predict(model, newdata = b_df)
