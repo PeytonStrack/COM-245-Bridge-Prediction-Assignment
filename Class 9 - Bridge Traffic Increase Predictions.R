@@ -1,4 +1,9 @@
 library(tidyverse)
+library(sysfonts)
+library(showtext)
+
+font_add_google("Racing Sans One", family = "Race")
+showtext_auto()
 
 source("mta_daily_prep.R")
 source("SetID.R")
@@ -37,4 +42,9 @@ future_data %>%
   print(n = 999) -> increase_df
 
 ggplot(increase_df, aes(x = Year, y = pct_increase, fill = ID)) +
-  geom_col(position = "dodge")
+  geom_col(position = "dodge", color = "#000") +
+  scale_fill_manual(values = c("BWB" = "#ffe2f4", "CBB" = "#ffd4ee", "HHB" = "#ffc5e9", "MPB" = "#ffb7e3", "TBM" = "#ffa8dd", "TBX" = "#ff9ad8", "TNB" = "#ff8bd2", "VNB" = "#ff7dcd")) +
+  labs(title = "Predicted Percent Traffic Increase Across NYC Bridges", subtitle = "For 2026 to 2030", y = "Percent Traffic Increase") +
+  theme(text = element_text(family = "Race", size = 14, color = "#751a46"), panel.background = element_rect(fill = "#f19cbb"), panel.grid = element_line(color = "#e591b0"), plot.background = element_rect(fill = "#de6fa1"), plot.title = element_text(size = 18), axis.text = element_text(color = "#850a42", size = 10))
+                                                                                
+                                                                                
