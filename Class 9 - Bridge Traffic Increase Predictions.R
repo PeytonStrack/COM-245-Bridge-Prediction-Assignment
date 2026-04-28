@@ -32,22 +32,9 @@ future_data$PredTraf <- futurePredictions
 future_data %>%
   group_by(ID) %>%
   mutate(pct_increase = (PredTraf - lag(PredTraf)) / lag(PredTraf) * 100) %>%
-  print(n = 999)
-#Graphing Regression Lines
-pred_df <- b_df %>%
-  group_by(ID) %>%
-  do({
-    model <- lm(TotTraffic ~ Year, data = .)
-    newdata <- data.frame(Year = 2026:2030)
-    preds <- predict(model, newdata)
-    data.frame(ID = unique(.$ID), Year = newdata$Year, TotTraffic = preds)
-  })
+  arrange(pct_increase) %>%
+  filter(Year >= 2026) %>%
+  print(n = 999) -> increase_df
 
-ggplot(pred_df, aes(x = Year, y = TotTraffic, color = ID)) +
-  geom_line() +
-  coord_cartesian(xlim = c(2026, 2030)) +
-  scale_y_continuous(labels = comma) +
-  labs(
-    y = "Traffic",
-    title = "Prediction of MTA Traffic until 2030"
-  )
+ggplot(increase_df, aes(x = Year, y = pct_increase, fill = ID)) +
+  geom_col(position = "dodge")
